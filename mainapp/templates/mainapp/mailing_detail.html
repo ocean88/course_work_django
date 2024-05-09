@@ -1,0 +1,14 @@
+{% extends "mainapp/base.html" %}
+
+{% block content %}
+
+<h1>Mailing Detail</h1>
+    <p>ID: {{ mailing.pk }}</p>
+    <p>First Send: {{ mailing.first_send }}</p>
+    <p>Frequency: {{ mailing.get_frequency_display }}</p>
+    <p>Status: {{ mailing.get_status_display }}</p>
+    <p>Message: {{ mailing.message }}</p>
+    <a href="{% url 'mainapp:edit_mailing' mailing.pk %}">Edit</a>
+    <a href="{% url 'mainapp:delete_mailing' mailing.pk %}">Delete</a>
+
+{% endblock %}

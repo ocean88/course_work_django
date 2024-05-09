@@ -1,0 +1,18 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+    <div class="container">
+        <div class = 'col-md-6'>
+            <div class = card-body>
+            {% csrf_token %}
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mt-3">Вход</button>
+    </div>
+        <p><a href="{% url 'users:password_reset' %}">Забыли пароль?</a></p>
+        <p><a href="{% url 'users:register' %}">Зарегистрироваться</a></p>
+    </div>
+</form>
+{% endblock %}
+

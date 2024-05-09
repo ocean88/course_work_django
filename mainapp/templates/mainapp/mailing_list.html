@@ -1,0 +1,16 @@
+{% extends "mainapp/base.html" %}
+
+{% block content %}
+
+ <h1>Mailing List</h1>
+    <ul>
+        {% for mailing in mailings %}
+            <li><a href="{% url 'mainapp:mailing_detail' mailing.pk %}">{{ mailing }}</a></li>
+        {% empty %}
+            <li>No mailings yet.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'mainapp:create_mailing' %}">Create New Mailing</a>
+
+
+{% endblock %}

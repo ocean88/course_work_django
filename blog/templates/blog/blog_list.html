@@ -1,0 +1,27 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+<div class="col-12 mb-5">
+    <a class="btn btn-lg btn-block btn-outline-primary mb-3" href="{% url 'blog:create' %}">Добавить статью</a>
+    <div class="row">
+        {% for object in object_list %}
+        <div class="col-md-4 mb-4">
+            <div class="card box-shadow">
+                {% if object.image %}
+                <img src="{{ object.image.url }}" class="card-img-top" alt="Preview Image" style="height: 200px; width: auto; display: block; object-fit: cover;">
+                {% endif %}
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ object.title }}</h4>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ object.content}}</p>
+                    <a class="btn btn-sm btn-block btn-outline-primary" href="{% url 'blog:view' object.pk %}">Подробнее</a>
+                    <a class="btn btn-sm btn-block btn-outline-primary" href="{% url 'blog:edit' object.pk %}">изменить</a>
+                    <a class="btn btn-sm btn-block btn-outline-primary" href="{% url 'blog:delete' object.pk %}">удалить</a>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

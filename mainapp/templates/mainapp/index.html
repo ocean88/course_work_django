@@ -1,0 +1,92 @@
+{% extends "mainapp/base.html" %}
+
+{% block content %}
+    <h1>Главная страница</h1>
+
+    <div>
+        <h2>Список клиентов</h2>
+        <ul>
+            {% for client in clients %}
+                <li>
+                    {{ client.full_name }} - {{ client.email }}
+                    <a href="{% url 'mainapp:edit_client' client.pk %}">Редактировать</a>
+                    <a href="{% url 'mainapp:delete_client' client.pk %}">Удалить</a>
+                </li>
+            {% empty %}
+                <li>Список клиентов пуст</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <h2>Сообщения</h2>
+        <ul>
+            {% for message in messages %}
+                <li>
+                    {{ message.subject }} - {{ message.content }}
+                    <a href="{% url 'mainapp:edit_message' message.pk %}">Редактировать</a>
+                    <a href="{% url 'mainapp:delete_message' message.pk %}">Удалить</a>
+                </li>
+            {% empty %}
+                <li>Список сообщений пуст</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <h2>Рассылки</h2>
+        <ul>
+            {% for mailing in mailings %}
+                <li>
+                    <strong>Дата создания:</strong> {{ mailing.first_send }}<br>
+                    <strong>Частота:</strong> {{ mailing.get_frequency_display }}<br>
+                    <strong>Статус:</strong> {{ mailing.get_status_display }}<br>
+
+                    <!-- Ссылки для редактирования и удаления -->
+                    <a href="{% url 'mainapp:edit_mailing' mailing.pk %}">Редактировать</a>
+                    <a href="{% url 'mainapp:delete_mailing' mailing.pk %}">Удалить</a>
+
+                    <!-- Вывод информации о попытках отправки -->
+                    {% if mailing.status == 'running' %}
+                        <strong>Попытки отправки:</strong><br>
+                        <ul>
+                            {% for attempt in mailing.sendingattempt_set.all %}
+                                <li>
+                                    Дата и время попытки: {{ attempt.timestamp }}<br>
+                                    Статус: {{ attempt.status }}<br>
+                                    Ответ сервера: {{ attempt.server_response }}
+                                </li>
+                            {% empty %}
+                                <li>Попыток отправки нет</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% empty %}
+                <li>Рассылок пока нет</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+     <div>
+        <h2>Новости</h2>
+        <ul>
+            {% for blog in blogs %}
+                <li>
+                    <strong>{{ blog.title }}</strong><br>
+                    {{ blog.content }}<br>
+
+                    <em>Дата публикации: {{ blog.publish_date }}</em>
+                </li>
+            {% empty %}
+                <li>Новостей пока нет</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!-- Кнопка для отправки рассылки -->
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="send_mailing">Отправить рассылку</button>
+    </form>
+
+{% endblock %}

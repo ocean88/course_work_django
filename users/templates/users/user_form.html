@@ -1,0 +1,15 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+    <div class="container">
+        <div class = 'col-md-6'>
+            <div class = card-body>
+            {% csrf_token %}
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mt-3">Зарегистрироваться</button>
+    </div>
+    </div>
+</form>
+{% endblock %}

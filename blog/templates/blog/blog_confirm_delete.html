@@ -1,0 +1,18 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-6">
+          <div class ='card'>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <p>Вы действительно хотите удалить статью "{{ object.title }}"?</p>
+                    <button type="submit" class="btn btn-danger">Подтвердить
+                    </button>
+                    <a href="{% url 'blog:list' %}" class="btn btn-warning">Отменить</a>
+                </form>
+            </div>
+          </div>
+        </div>
+    </div>
+{% endblock %}
