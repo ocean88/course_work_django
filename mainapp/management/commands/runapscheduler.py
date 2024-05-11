@@ -75,7 +75,7 @@ class Command(BaseCommand):
         for mailing in mailings:
             trigger = None
             if mailing.frequency == 'daily':
-                trigger = CronTrigger(day='1', hour='0', minute='0')
+                trigger = CronTrigger(second='5')
             elif mailing.frequency == 'weekly':
                 trigger = CronTrigger(day_of_week='sun', hour='0', minute='0')
             elif mailing.frequency == 'monthly':

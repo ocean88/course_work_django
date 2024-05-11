@@ -10,6 +10,8 @@ from .forms import MailingForm, ClientForm, MessageForm
 from django.core.mail import send_mail
 import pytz
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_page
+from .services import get_model_from_cache
 
 
 @login_required
@@ -50,21 +52,19 @@ def send_mailing(request):
         mailing.save()
 
 
+@cache_page(60 * 15)  # Cache for 15 minutes
 @login_required
 def main_index(request):
-    # Check if the user is staff or superuser
     if request.user.is_staff or request.user.is_superuser:
-        clients = Client.objects.all()
-        mailings = Mailing.objects.all()
-        messages = Message.objects.all()
-        blogs = Blog.objects.all()
+        clients = get_model_from_cache(Client)
+        mailings = get_model_from_cache(Mailing)
+        messages = get_model_from_cache(Message)
+        blogs = get_model_from_cache(Blog)
     else:
-        clients = Client.objects.filter(owner=request.user)
-        mailings = Mailing.objects.filter(owner=request.user)
-        messages = Message.objects.filter(owner=request.user)
-        blogs = Blog.objects.all()
-
-
+        clients = get_model_from_cache(Client).filter(owner=request.user)
+        mailings = get_model_from_cache(Mailing).filter(owner=request.user)
+        messages = get_model_from_cache(Message).filter(owner=request.user)
+        blogs = get_model_from_cache(Blog)
 
     context = {
         'clients': clients,
@@ -197,5 +197,3 @@ def delete_message(request, pk):
         message.delete()
         return redirect('mainapp:index')
     return render(request, 'mainapp/message_confirm_delete.html', {'message': message})
-
-

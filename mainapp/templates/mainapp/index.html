@@ -1,6 +1,7 @@
 {% extends "mainapp/base.html" %}
 
 {% block content %}
+
     <h1>Главная страница</h1>
 
     <div>
@@ -77,6 +78,7 @@
                     {{ blog.content }}<br>
 
                     <em>Дата публикации: {{ blog.publish_date }}</em>
+                    <a href="{% url 'blog:view' blog.pk %}">Посмотреть</a>
                 </li>
             {% empty %}
                 <li>Новостей пока нет</li>
